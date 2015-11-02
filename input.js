@@ -40,20 +40,16 @@ function playerMovement(){
         player.setCurrentAnim("idleLeft");
 
     if (u){
-        player.sprite.y -= walkspeed;
-        player.setCurrentAnim("walkUp");
+        player.moveUp();
     }
     if (d){
-        player.sprite.y += walkspeed;
-        player.setCurrentAnim("walkDown");
+        player.moveDown();
     }
     if (r){
-        player.sprite.x += walkspeed;
-        player.setCurrentAnim("walkRight");
+        player.moveRight();
     }
     if (l){
-        player.sprite.x -= walkspeed;
-        player.setCurrentAnim("walkLeft");
+        player.moveLeft();
     }
     if (rel) window.location.reload(false);
 }

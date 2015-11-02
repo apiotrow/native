@@ -19,16 +19,21 @@ var Person = Class({
 		this.frames = []; //for holding the frames we add as children when we initialize
 		this.currentAnimInterval = 10; //interval in milliseconds between frames of current anim
 		this.nextFrame = false; //are we allowed to change frames?
-		this.currentAnim = ""; //Person's current animation
+		this.currentAnim = "idleDown"; //Person's current animation
 		this.sprite = new Sprite();
-		this.currentTime = time;
+		this.lastTime = time;
 		this.direction = "down";
+		this.x = this.sprite.x;
+		this.y = this.sprite.y;
+		this.walkSpeed = 3;
 	},
 	update: function(){
+		this.x = this.sprite.x;
+		this.y = this.sprite.y;
+
 		//if we're allowed to change to the next frame, and the animation we've set
 	    //actually exists
-	    if(this.currentTime < time && this.anims.hasOwnProperty(this.currentAnim)){
-
+	    if(this.lastTime < time && this.anims.hasOwnProperty(this.currentAnim)){
 	        //set all frames to invisible, except the one we're on
 	        for(var j = 0; j < this.sprite.numChildren; j++){
 	            this.sprite.getChildAt(j).visible = false;
@@ -38,7 +43,7 @@ var Person = Class({
 	        }
 
 	        //reset time
-	        this.currentTime = time;
+	        this.lastTime = time;
 
 	        //increment frame counter
 	        this.anims[this.currentAnim][2]++;
@@ -61,12 +66,10 @@ var Person = Class({
 		//[frame anim starts on, frame anim ends on, 
 		//a variable to hold where we left off, interval]
 		this.anims[animName] = [animStartFrame, animStartFrame + startsX.length, animStartFrame, 103];
-		console.log(this.anims["walkDown"]);
+		// console.log(this.anims["walkDown"]);
     },
     addFrame: function(spritesheet, x, y, w, h){
         var newHund = new BitmapData("onehundy.png");
-        // newHund.width = 100;
-        // newHund.height = 100;
         var ss = new BitmapData(spritesheet);
         ss.loader.addEventListener(Event.COMPLETE, function (e) {
             var pixeldata = ss.getPixels(new Rectangle(x,y,w,h));
@@ -74,17 +77,8 @@ var Person = Class({
         });
         this.frames.push(newHund);
     },
-    // setCurrentAnimInterval: function(ms){
-    // 	clearInterval(this.currentAnimInterval);
-    // 	this.currentAnimInterval = setInterval(function(){ 
-    //     	this.nextFrame = true;
-    // 	}, ms);
-    // },
     setCurrentAnim: function(animName){
     	this.currentAnim = animName;
-	    // if(this.anims.hasOwnProperty(animName)){
-	    // 	this.setCurrentAnimInterval(this.anims[animName][3]);
-    	// }
     },
     setupPlayerSprite: function(x, y){
         this.sprite = new Sprite();
@@ -97,5 +91,21 @@ var Person = Class({
             tempBitmap.y = -50;
             this.sprite.addChild(tempBitmap);
         }
-    }
+    },
+    moveDown: function(){
+		this.sprite.y += walkspeed;
+        player.setCurrentAnim("walkDown");
+    },
+    moveUp: function(){
+		this.sprite.y -= walkspeed;
+        player.setCurrentAnim("walkUp");
+    },
+    moveLeft:  function(){
+		this.sprite.x -= walkspeed;
+        player.setCurrentAnim("walkLeft");
+    },
+    moveRight: function(){
+		this.sprite.x += walkspeed;
+        player.setCurrentAnim("walkRight");
+    },
 });
