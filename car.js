@@ -19,10 +19,6 @@ function Start() {
     stage.stageWidth = 700;
     stage.stageHeight = 400;
 
-    
-
-
-
     // background
     var s = new Sprite();
     s.graphics.beginBitmapFill(new BitmapData("grasstile.png"));
@@ -30,27 +26,11 @@ function Start() {
     stage.addChild(s);
 
 
-
-    //char anim
-    var frames = [];
-    function addFrame(spritesheet, x, y, w, h){
-        var newHund = new BitmapData("onehundy.png");
-        var ss = new BitmapData(spritesheet);
-        ss.loader.addEventListener(Event.COMPLETE, function (e) {
-            var pixeldata = ss.getPixels(new Rectangle(x,y,w,h));
-            newHund.setPixels(new Rectangle(0,0,100,100), pixeldata);
-        });
-        frames.push(newHund);
-    }
-
-    addFrame("girlsheet.png", 100, 0, 100, 100);
-    addFrame("girlsheet.png", 200, 0, 100, 100);
-    addFrame("girlsheet.png", 300, 0, 100, 100);
-    addFrame("girlsheet.png", 400, 0, 100, 100);
-    addFrame("girlsheet.png", 500, 0, 100, 100);
-    addFrame("girlsheet.png", 600, 0, 100, 100);
-    walkDownFrames['start'] = 0;
-    walkDownFrames['end'] = 5;
+    //char
+    var player = new Person("player", {});
+    player.newAnim("walkDown", "girlsheet.png", 100, 100, 
+        [100, 200, 300, 400, 500, 600],
+        [0, 0, 0, 0, 0, 0]);
 
 
     // car	
@@ -58,32 +38,18 @@ function Start() {
     car.x = stage.stageWidth / 2;
     car.y = stage.stageHeight / 2;
     var cb = new Bitmap();
-    for(var i = 0; i < frames.length; i++){
-        cb = new Bitmap(frames[i]);
+    for(var i = 0; i < player.frames.length; i++){
+        cb = new Bitmap(player.frames[i]);
         cb.x = -123;
         cb.y = -50;
         car.addChild(cb);
     }
     
-    
-    // var cb = new Bitmap(frames[0]);
-    // cb.x = -123;
-    // cb.y = -50;
-    // cb.id = "frame1";
-    // car.addChild(cb);
-    // cb = new Bitmap(frames[1]);
-    // cb.x = -123;
-    // cb.y = -50;
-    // cb.id = "frame2";
-    // car.addChild(cb);
-    // console.log(car.getChildAt(0));
-    // console.log(car.getChildAt(1));
-
     stage.addChild(car);
 
     setInterval(function(){ 
         changeFrames = true;
-    }, 1000);
+    }, 100);
 
     // events
     stage.addEventListener(KeyboardEvent.KEY_DOWN, onKD);
@@ -144,13 +110,7 @@ function onEF(e) {
             walkDownCounter = parseInt(walkDownFrames.starts);
         }
     }
-    // if(totalSeconds%2 == 0){
-    //     car.getChildAt(0).visible = false;
-    //     car.getChildAt(1).visible = true;
-    // }else{
-    //     car.getChildAt(1).visible = false;
-    //     car.getChildAt(0).visible = true;
-    // }
+
 
     counter++;
 
