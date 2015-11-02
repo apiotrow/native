@@ -20,6 +20,7 @@ var Person = Class({
 		this.currentAnimInterval = 10; //interval in milliseconds between frames of current anim
 		this.changeFrames = false; //are we allowed to change frames?
 		this.currentAnim = ""; //Person's current animation
+		this.sprite = new Sprite();
 	},
 	toString: function(){
 		return ("Person: " + this.name);
@@ -57,5 +58,17 @@ var Person = Class({
 	    if(this.anims.hasOwnProperty(animName)){
 	    	this.setCurrentAnimInterval(this.anims[animName][3]);
     	}
+    },
+    setupPlayerSprite: function(x, y){
+        this.sprite = new Sprite();
+        this.sprite.x = x;
+        this.sprite.y = y;
+        var tempBitmap;
+        for(var i = 0; i < this.frames.length; i++){
+            tempBitmap = new Bitmap(this.frames[i]);
+            tempBitmap.x = -123;
+            tempBitmap.y = -50;
+            this.sprite.addChild(tempBitmap);
+        }
     }
 });

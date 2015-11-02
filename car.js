@@ -1,4 +1,4 @@
-var stage, car;
+var stage;
 var walkspeed = 3;
 var l, r, u, d, rel;
 var walkDownFrames = {"starts": "0", "ends":"5"};
@@ -29,23 +29,24 @@ function Start() {
         [0],
         [0],
         100);
-    setupPlayerSprite(stage.stageWidth / 2, stage.stageHeight / 2);
+    player.setupPlayerSprite(stage.stageWidth / 2, stage.stageHeight / 2);
 
-    function setupPlayerSprite(x, y){
-        car = new Sprite();
-        car.x = x;
-        car.y = y;
-        var tempBitmap;
-        for(var i = 0; i < player.frames.length; i++){
-            tempBitmap = new Bitmap(player.frames[i]);
-            tempBitmap.x = -123;
-            tempBitmap.y = -50;
-            car.addChild(tempBitmap);
-        }
-    }
+    // function setupPlayerSprite(x, y){
+    //     car = new Sprite();
+    //     car.x = x;
+    //     car.y = y;
+    //     var tempBitmap;
+    //     for(var i = 0; i < player.frames.length; i++){
+    //         tempBitmap = new Bitmap(player.frames[i]);
+    //         tempBitmap.x = -123;
+    //         tempBitmap.y = -50;
+    //         car.addChild(tempBitmap);
+    //     }
+    // }
 
 
-    stage.addChild(car);
+    // stage.addChild(car);
+    stage.addChild(player.sprite);
 
 
     setInterval(function(){ 
@@ -92,13 +93,13 @@ function onEF(e) {
     //animation when no movement input is being given
     player.setCurrentAnim("idle");
 
-    if (u) car.y -= walkspeed;
+    if (u) player.sprite.y -= walkspeed;
     if (d){
-        car.y += walkspeed;
+        player.sprite.y += walkspeed;
         player.setCurrentAnim("walkDown");
     }
-    if (r) car.x += walkspeed;
-    if (l) car.x -= walkspeed;
+    if (r) player.sprite.x += walkspeed;
+    if (l) player.sprite.x -= walkspeed;
     if (rel) window.location.reload(false);
 
     //if we're allowed to change to the next frame, and the animation we've set
@@ -106,10 +107,10 @@ function onEF(e) {
     if(changeFrames && player.anims.hasOwnProperty(player.currentAnim)){
 
         //set all frames to invisible, except the one we're on
-        for(var j = 0; j < car.numChildren; j++){
-            car.getChildAt(j).visible = false;
+        for(var j = 0; j < player.sprite.numChildren; j++){
+            player.sprite.getChildAt(j).visible = false;
             if(j == player.anims[player.currentAnim][2]){
-                car.getChildAt(j).visible = true;
+                player.sprite.getChildAt(j).visible = true;
             }
         }
 
