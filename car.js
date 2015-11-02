@@ -28,36 +28,22 @@
             s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
             stage.addChild(s);
 
+
+
             //char anim
-            var onehundy = new BitmapData("onehundy.png");
-            var girl = new BitmapData("girlsheet.png");
-            girl.loader.addEventListener(Event.COMPLETE, goOn);
-            function goOn(e) {
-                var mydata = girl.getPixels(new Rectangle(100,0,100,100));
-                onehundy.setPixels(new Rectangle(0,0,100,100), mydata);
-                // dragonBD.loader.addEventListener(Event.COMPLETE, goOnn);
-                // function goOnn(e) {
-                // edit mydata - it is an array of pixels
-                
-
-                // var bmd = new BitmapData(100,100, true, 0xFFCCCCCC);
-                
-                // bmd.setPixels(myrect, mydata);
-                // console.log(onehundy);
-                // frames.push(dragonBD);
-                // console.log(frames.length);
-                // }
+            function newHundy(spritesheet, x, y, w, h){
+                var newHund = new BitmapData("onehundy.png");
+                var ss = new BitmapData(spritesheet);
+                ss.loader.addEventListener(Event.COMPLETE, function (e) {
+                    var pixeldata = ss.getPixels(new Rectangle(x,y,w,h));
+                    newHund.setPixels(new Rectangle(0,0,100,100), pixeldata);
+                });
+                frames.push(newHund);
             }
-            frames.push(onehundy);
 
-            var onehundys = new BitmapData("onehundy.png");
-            var girlee = new BitmapData("girlsheet.png");
-            girlee.loader.addEventListener(Event.COMPLETE, goOnn);
-            function goOnn(e) {
-                var mydata = girlee.getPixels(new Rectangle(400,0,100,100));
-                onehundys.setPixels(new Rectangle(0,0,100,100), mydata);
-            }
-            frames.push(onehundys);
+            newHundy("girlsheet.png", 100, 0, 100, 100);
+            newHundy("girlsheet.png", 400, 0, 100, 100);
+
 
 
             // car	
