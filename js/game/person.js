@@ -1,6 +1,10 @@
 define("Person", function() {
 	return function Person(name){
 		this.walkSpeed = 3;
+		this.spriteSheet = "";
+		this.frameWidth;
+		this.frameHeight;
+		this.framesInfo = {};
 		this.name = name;
 		this.anims = {}; //{"anim's name": [bunch of ints]}
 		this.frames = []; //for holding the frames we add as children when we initialize
@@ -45,15 +49,32 @@ define("Person", function() {
 		    }
 		};
 		//make a new animation and add it to this.anims
-		this.newAnim = function(animName, spriteSheet, w, h, startsX, startsY, speed){
+		this.newAnim = function(args){
 			var animStartFrame = this.frames.length;
-			for(var i = 0; i < startsX.length; i++){
-				this.addFrame(spriteSheet, startsX[i], startsY[i], w, h);
+			for(var i = 0; i < args.frameCoords.length; i++){
+				this.addFrame(
+					this.spriteSheet, 
+					args.frameCoords[i][0], 
+					args.frameCoords[i][1], 
+					this.frameWidth, 
+					this.frameHeight
+				);
 			}
-			//[frame anim starts on, frame anim ends on, 
-			//a variable to hold where we left off, interval]
-			this.anims[animName] = [animStartFrame, animStartFrame + startsX.length, animStartFrame, 103];
-			// console.log(this.anims["walkDown"]);
+			this.anims[args.animName] = [
+				animStartFrame, 
+				animStartFrame + args.frameCoords.length, 
+				animStartFrame, 
+				args.speed
+			];
+	    };
+	    this.createAnims = function(){
+	    	for(var anim in this.framesInfo){
+	    		this.newAnim({
+	    			animName: anim, 
+        			frameCoords: this.framesInfo[anim].frameCoords, 
+        			speed: this.framesInfo[anim].speed
+        		});
+	    	};
 	    };
 	    this.addFrame = function(spritesheet, x, y, w, h){
 	        var newHund = new BitmapData("assets/sprites/onehundy.png");

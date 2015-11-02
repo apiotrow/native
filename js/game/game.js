@@ -25,40 +25,101 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
 
     //player setup
     player = new Person("player");
-    player.newAnim("idleDown", "assets/sprites/girlsheet.png", 100, 100, 
-        [0],
-        [0],
-        100);
-    player.newAnim("idleRight", "assets/sprites/girlsheet.png", 100, 100, 
-        [0],
-        [200],
-        100);
-    player.newAnim("idleLeft", "assets/sprites/girlsheet.png", 100, 100, 
-        [0],
-        [300],
-        100);
-    player.newAnim("idleUp", "assets/sprites/girlsheet.png", 100, 100, 
-        [0],
-        [100],
-        100);
-    player.newAnim("walkDown", "assets/sprites/girlsheet.png", 100, 100, 
-        [100, 200, 300, 400, 500, 600],
-        [0, 0, 0, 0, 0, 0],
-        100);
-    player.newAnim("walkRight", "assets/sprites/girlsheet.png", 100, 100, 
-        [100, 200, 300, 400, 500, 600],
-        [200, 200, 200, 200, 200, 200],
-        100);
-    player.newAnim("walkLeft", "assets/sprites/girlsheet.png", 100, 100, 
-        [100, 200, 300, 400, 500, 600],
-        [300, 300, 300, 300, 300, 300],
-        100);
-    player.newAnim("walkUp", "assets/sprites/girlsheet.png", 100, 100, 
-        [100, 200, 300, 400, 500, 600],
-        [100, 100, 100, 100, 100, 100],
-        100);
+    player.spriteSheet = "assets/sprites/girlsheet.png";
+    player.frameWidth = 100;
+    player.frameHeight = 100;
+    player.framesInfo = {
+        "idleDown": {
+            frameCoords: [
+                [0,0]
+            ],
+            speed: 100
+        },
+        "idleRight": {
+            frameCoords: [
+                [0,200]
+            ],
+            speed: 100
+        },
+        "idleLeft": {
+            frameCoords: [
+                [0,300]
+            ],
+            speed: 100
+        },
+        "idleUp": {
+            frameCoords: [
+                [0,100]
+            ],
+            speed: 100
+        },
+        "walkDown": {
+            frameCoords: [
+                [100,0],
+                [200,0],
+                [300,0],
+                [400,0],
+                [500,0],
+                [600,0],
+            ],
+            speed: 100
+        },
+        "walkRight": {
+            frameCoords: [
+                [100,200],
+                [200,200],
+                [300,200],
+                [400,200],
+                [500,200],
+                [600,200],
+            ],
+            speed: 100
+        },
+        "walkLeft": {
+            frameCoords: [
+                [100,300],
+                [200,300],
+                [300,300],
+                [400,300],
+                [500,300],
+                [600,300],
+            ],
+            speed: 100
+        },
+        "walkUp": {
+            frameCoords: [
+                [100,100],
+                [200,100],
+                [300,100],
+                [400,100],
+                [500,100],
+                [600,100],
+            ],
+            speed: 100
+        },
+    };
+    player.createAnims();
+
     player.setupSprite(stage.stageWidth / 2, stage.stageHeight / 2);
     persons.push(player);
+
+    // var npc = new Person("npcguy");
+    // npc.newAnim("walkDown", "assets/sprites/girlsheet.png", 100, 100, 
+    //     [100, 200, 300, 400, 500, 600],
+    //     [0, 0, 0, 0, 0, 0],
+    //     100);
+    // npc.setupSprite(stage.stageWidth / 3, stage.stageHeight / 3);
+    // npc.setCurrentAnim("walkDown");
+    // persons.push(npc);
+
+    // var npc2 = new Person("npcguy");
+    // npc2.newAnim("walkDown", "assets/sprites/girlsheet.png", 100, 100, 
+    //     [100, 200, 300, 400, 500, 600],
+    //     [0, 0, 0, 0, 0, 0],
+    //     100);
+    // npc2.setupSprite((stage.stageWidth / 2) + 100, (stage.stageHeight / 2) + 100);
+    // npc2.setCurrentAnim("walkDown");
+    // persons.push(npc2);
 
 
     //initialize input handler
@@ -109,6 +170,7 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
             persons[i].update();
         }
 
+        //send newest inputs into input handler
         newInput.update(u, d, l, r, rel);
     }
 });

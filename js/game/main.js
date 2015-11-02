@@ -4,9 +4,9 @@
 //   }
 // });
 
-//i think this needs to have person there, or the async loading
-//may cause person not to be ready when it's called in game
-require(['person','game'],function(person, game){
+//i think modules need to be put in this array to make sure
+//they load before the game starts
+require(['input','person','game'],function(input, person, game){
   // game.Start();
 });
 
