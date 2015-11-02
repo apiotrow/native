@@ -6,7 +6,7 @@ define("Person", function() {
 		this.frames = []; //for holding the frames we add as children when we initialize
 		this.currentAnimInterval = 10; //interval in milliseconds between frames of current anim
 		this.nextFrame = false; //are we allowed to change frames?
-		this.currentAnim = "walkRight"; //Person's current animation
+		this.currentAnim = "idleDown"; //Person's current animation
 		this.sprite = new Sprite();
 		this.lastTime = time;
 		this.x = this.sprite.x;
@@ -67,7 +67,7 @@ define("Person", function() {
 	    this.setCurrentAnim = function(animName){
 	    	this.currentAnim = animName;
 	    };
-	    this.setupPlayerSprite = function(x, y){
+	    this.setupSprite = function(x, y){
 	        this.sprite = new Sprite();
 	        this.sprite.x = x;
 	        this.sprite.y = y;
@@ -79,21 +79,22 @@ define("Person", function() {
 	            this.sprite.addChild(tempBitmap);
 	        }
 	    };
-	    this.moveDown = function(){
+	    this.moveDown = function(anim){
 			this.sprite.y += this.walkSpeed;
-	        this.setCurrentAnim("walkDown");
+	        this.setCurrentAnim(anim);
 	    };
-	    this.moveUp = function(){
+	    this.moveUp = function(anim){
 			this.sprite.y -= this.walkSpeed;
-	        this.setCurrentAnim("walkUp");
+	        this.setCurrentAnim(anim);
 	    };
-	    this.moveLeft =  function(){
+	    this.moveLeft =  function(anim){
 			this.sprite.x -= this.walkSpeed;
-	        this.setCurrentAnim("walkLeft");
+	        this.setCurrentAnim(anim);
 	    };
-	    this.moveRight = function(){
+	    this.moveRight = function(anim){
 			this.sprite.x += this.walkSpeed;
-	        this.setCurrentAnim("walkRight");
+	        this.setCurrentAnim(anim);
 	    };
+
 	};
 });
