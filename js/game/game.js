@@ -22,7 +22,7 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
     stage.addChild(s);
 
     //player setup
-    var player = new Person("player", stage, 100, 100, "assets/sprites/girlsheet.png");
+    var player = new Person("player", stage, 100, 100, "assets/sprites/girlsheet.png", false);
     player.framesInfo = {
         "idleDown": {
             frameCoords: [
@@ -97,7 +97,7 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
     player.setupSprite(stage.stageWidth / 2, stage.stageHeight / 2);
     persons.push(player);
 
-    var npc = new Person("npcguy", stage, 100, 100, "assets/sprites/girlsheet.png");
+    var npc = new Person("npcguy", stage, 100, 100, "assets/sprites/girlsheet.png", true);
     npc.framesInfo = {
         "walkDown": {
             frameCoords: [
@@ -116,7 +116,7 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
     npc.setCurrentAnim("walkDown");
     persons.push(npc);
 
-    var npc2 = new Person("npcguy2", stage, 100, 100, "assets/sprites/girlsheet.png");
+    var npc2 = new Person("npcguy2", stage, 100, 100, "assets/sprites/girlsheet.png", true);
     npc2.framesInfo = {
         "walkUp": {
             frameCoords: [
@@ -133,7 +133,7 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
     npc2.createAnims();
     npc2.setupSprite(stage.stageWidth / 4 + 350, stage.stageHeight / 4 + 100);
     npc2.setCurrentAnim("walkUp");
-    persons.push(npc2);
+    // persons.push(npc2);
 
 
     //initialize input handler
@@ -181,10 +181,10 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
     function EF(){
         // //update all Persons
         for(var i = 0; i < persons.length; i++){
-            persons[i].update();
+            persons[i].update(persons);
         }
 
-        //send newest inputs into input handler
+        //send newest inputs into input handler, and send all other persons
         newInput.update(u, d, l, r, rel);
     }
 });

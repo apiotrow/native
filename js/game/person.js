@@ -1,5 +1,6 @@
 define("Person",["ivank"], function(h) {
-	return function Person(name, stage, width, height, spriteSheet){
+	return function Person(name, stage, width, height, spriteSheet, isNpc){
+		this.isNpc = isNpc;
 		this.walkSpeed = 3;
 		this.spriteSheet = spriteSheet;
 		this.frameWidth = width;
@@ -17,8 +18,18 @@ define("Person",["ivank"], function(h) {
 
     	stage.addChild(this.boundingBox);
 
-		this.update = function(){
+		this.update = function(persons){
 			this.drawBoundingBox();
+
+			if(!this.isNpc){
+				for(var i = 0; i < persons.length; i++){
+					if(persons[i] != this){
+						if(this.sprite.hitTestObject(persons[i].sprite)){
+							console.log("hit");
+						}
+					}
+				}
+			}
 
 			//if we're allowed to change to the next frame, and the animation we've set
 		    //actually exists
@@ -60,6 +71,8 @@ define("Person",["ivank"], function(h) {
 				drawRect(x, y + h, w, lineWidth);
 				drawRect(x + w, y, lineWidth, h);
 				drawRect(x, y, lineWidth, h);
+
+
 			}
 		};
 		//make a new animation and add it to this.anims
