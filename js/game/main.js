@@ -4,8 +4,8 @@
 //   }
 // });
 
-require(['game'],function(game){
-  game.Start();
+require(['person','game'],function(person, game){
+  // game.Start();
 });
 
 
