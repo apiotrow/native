@@ -69,7 +69,7 @@ var Person = Class({
 		// console.log(this.anims["walkDown"]);
     },
     addFrame: function(spritesheet, x, y, w, h){
-        var newHund = new BitmapData("onehundy.png");
+        var newHund = new BitmapData("assets/sprites/onehundy.png");
         var ss = new BitmapData(spritesheet);
         ss.loader.addEventListener(Event.COMPLETE, function (e) {
             var pixeldata = ss.getPixels(new Rectangle(x,y,w,h));

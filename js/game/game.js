@@ -17,42 +17,42 @@ function Start() {
 
     //background
     var s = new Sprite();
-    s.graphics.beginBitmapFill(new BitmapData("grasstile.png"));
+    s.graphics.beginBitmapFill(new BitmapData("assets/textures/grasstile.png"));
     s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
     stage.addChild(s);
 
 
     //player setup
     player = new Person("player");
-    player.newAnim("idleDown", "girlsheet.png", 100, 100, 
+    player.newAnim("idleDown", "assets/sprites/girlsheet.png", 100, 100, 
         [0],
         [0],
         100);
-    player.newAnim("idleRight", "girlsheet.png", 100, 100, 
+    player.newAnim("idleRight", "assets/sprites/girlsheet.png", 100, 100, 
         [0],
         [200],
         100);
-    player.newAnim("idleLeft", "girlsheet.png", 100, 100, 
+    player.newAnim("idleLeft", "assets/sprites/girlsheet.png", 100, 100, 
         [0],
         [300],
         100);
-    player.newAnim("idleUp", "girlsheet.png", 100, 100, 
+    player.newAnim("idleUp", "assets/sprites/girlsheet.png", 100, 100, 
         [0],
         [100],
         100);
-    player.newAnim("walkDown", "girlsheet.png", 100, 100, 
+    player.newAnim("walkDown", "assets/sprites/girlsheet.png", 100, 100, 
         [100, 200, 300, 400, 500, 600],
         [0, 0, 0, 0, 0, 0],
         100);
-    player.newAnim("walkRight", "girlsheet.png", 100, 100, 
+    player.newAnim("walkRight", "assets/sprites/girlsheet.png", 100, 100, 
         [100, 200, 300, 400, 500, 600],
         [200, 200, 200, 200, 200, 200],
         100);
-    player.newAnim("walkLeft", "girlsheet.png", 100, 100, 
+    player.newAnim("walkLeft", "assets/sprites/girlsheet.png", 100, 100, 
         [100, 200, 300, 400, 500, 600],
         [300, 300, 300, 300, 300, 300],
         100);
-    player.newAnim("walkUp", "girlsheet.png", 100, 100, 
+    player.newAnim("walkUp", "assets/sprites/girlsheet.png", 100, 100, 
         [100, 200, 300, 400, 500, 600],
         [100, 100, 100, 100, 100, 100],
         100);

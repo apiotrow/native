@@ -39,6 +39,10 @@ function playerMovement(){
     else if(player.currentAnim == "walkLeft")
         player.setCurrentAnim("idleLeft");
 
+    if(onlyUp()){
+        
+    }
+
     if (u){
         player.moveUp();
     }
@@ -52,4 +56,10 @@ function playerMovement(){
         player.moveLeft();
     }
     if (rel) window.location.reload(false);
+}
+
+function onlyUp(){
+    if(u && !d && !r && !l){
+        return true;
+    }
 }
