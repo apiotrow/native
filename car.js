@@ -1,55 +1,57 @@
 var stage, car;
 var walkspeed = 3;
-var l, r, u, d, rel, counter = 0;
-var totalSeconds = 0;
+var l, r, u, d, rel;
 var walkDownFrames = {"starts": "0", "ends":"5"};
-var walkDownCounter = 0;
 var changeFrames = false;
-
-
-function setTime()
-{
-    ++totalSeconds;
-}
+var player;
 
 function Start() {
-    setInterval(setTime, 1000);
+
 
     stage = new Stage("c");
     stage.stageWidth = 700;
     stage.stageHeight = 400;
 
-    // background
+    //background
     var s = new Sprite();
     s.graphics.beginBitmapFill(new BitmapData("grasstile.png"));
     s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
     stage.addChild(s);
 
 
-    //char
-    var player = new Person("player", {});
+    //player setup
+    player = new Person("player");
     player.newAnim("walkDown", "girlsheet.png", 100, 100, 
         [100, 200, 300, 400, 500, 600],
-        [0, 0, 0, 0, 0, 0]);
+        [0, 0, 0, 0, 0, 0],
+        100);
+    player.newAnim("idle", "girlsheet.png", 100, 100, 
+        [0],
+        [0],
+        100);
+    setupPlayerSprite(stage.stageWidth / 2, stage.stageHeight / 2);
 
-
-    // car	
-    car = new Sprite();
-    car.x = stage.stageWidth / 2;
-    car.y = stage.stageHeight / 2;
-    var cb = new Bitmap();
-    for(var i = 0; i < player.frames.length; i++){
-        cb = new Bitmap(player.frames[i]);
-        cb.x = -123;
-        cb.y = -50;
-        car.addChild(cb);
+    function setupPlayerSprite(x, y){
+        car = new Sprite();
+        car.x = x;
+        car.y = y;
+        var tempBitmap;
+        for(var i = 0; i < player.frames.length; i++){
+            tempBitmap = new Bitmap(player.frames[i]);
+            tempBitmap.x = -123;
+            tempBitmap.y = -50;
+            car.addChild(tempBitmap);
+        }
     }
-    
+
+
     stage.addChild(car);
+
 
     setInterval(function(){ 
         changeFrames = true;
     }, 100);
+
 
     // events
     stage.addEventListener(KeyboardEvent.KEY_DOWN, onKD);
@@ -87,34 +89,39 @@ function onKU(e) {
 }
 
 function onEF(e) {
+    //animation when no movement input is being given
+    player.setCurrentAnim("idle");
 
     if (u) car.y -= walkspeed;
-    if (d) car.y += walkspeed;
-
+    if (d){
+        car.y += walkspeed;
+        player.setCurrentAnim("walkDown");
+    }
     if (r) car.x += walkspeed;
     if (l) car.x -= walkspeed;
     if (rel) window.location.reload(false);
 
+    //if we're allowed to change to the next frame, and the animation we've set
+    //actually exists
+    if(changeFrames && player.anims.hasOwnProperty(player.currentAnim)){
 
-    if(changeFrames){
-        for(var i = parseInt(walkDownFrames.starts); i <= parseInt(walkDownFrames.ends); i++){ 
-            // console.log(parseInt(walkDownFrames.starts) + " " + parseInt(walkDownFrames.ends));
-            if(i == walkDownCounter)  
-                car.getChildAt(i).visible = true;
-            else
-                car.getChildAt(i).visible = false;
+        //set all frames to invisible, except the one we're on
+        for(var j = 0; j < car.numChildren; j++){
+            car.getChildAt(j).visible = false;
+            if(j == player.anims[player.currentAnim][2]){
+                car.getChildAt(j).visible = true;
+            }
         }
+
+        //reset flag that lets us change frames
         changeFrames = false;
-        walkDownCounter++;
-        if(walkDownCounter > parseInt(walkDownFrames.ends)){
-            walkDownCounter = parseInt(walkDownFrames.starts);
+
+        //increment frame counter
+        player.anims[player.currentAnim][2]++;
+
+        //if frame counter is on last frame, reset it to the first one
+        if(player.anims[player.currentAnim][2] >= player.anims[player.currentAnim][1]){
+            player.anims[player.currentAnim][2] = player.anims[player.currentAnim][0];
         }
     }
-
-
-    counter++;
-
-    // console.log(totalSeconds + " " + counter);
-
-
 }
