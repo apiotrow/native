@@ -1,32 +1,34 @@
 define("Person", function() {
-
-
 	return function Person(name){
+		this.walkSpeed = 3;
 		this.name = name;
 		this.anims = {}; //{"anim's name": [bunch of ints]}
 		this.frames = []; //for holding the frames we add as children when we initialize
 		this.currentAnimInterval = 10; //interval in milliseconds between frames of current anim
 		this.nextFrame = false; //are we allowed to change frames?
-		this.currentAnim = "idleDown"; //Person's current animation
+		this.currentAnim = "walkRight"; //Person's current animation
 		this.sprite = new Sprite();
 		this.lastTime = time;
-		this.direction = "down";
 		this.x = this.sprite.x;
 		this.y = this.sprite.y;
-		this.walkSpeed = 3;
+		
 
 		this.update = function(){
 			this.x = this.sprite.x;
 			this.y = this.sprite.y;
+			// console.log(this.lastTime + "  " + time);
 
 			//if we're allowed to change to the next frame, and the animation we've set
 		    //actually exists
 		    if(this.lastTime < time && this.anims.hasOwnProperty(this.currentAnim)){
+
 		        //set all frames to invisible, except the one we're on
 		        for(var j = 0; j < this.sprite.numChildren; j++){
+
 		            this.sprite.getChildAt(j).visible = false;
 		            if(j == this.anims[this.currentAnim][2]){
 		                this.sprite.getChildAt(j).visible = true;
+
 		            }
 		        }
 
@@ -78,23 +80,20 @@ define("Person", function() {
 	        }
 	    };
 	    this.moveDown = function(){
-			this.sprite.y += this.walkspeed;
-	        player.setCurrentAnim("walkDown");
+			this.sprite.y += this.walkSpeed;
+	        this.setCurrentAnim("walkDown");
 	    };
 	    this.moveUp = function(){
-			this.sprite.y -= this.walkspeed;
-	        player.setCurrentAnim("walkUp");
+			this.sprite.y -= this.walkSpeed;
+	        this.setCurrentAnim("walkUp");
 	    };
 	    this.moveLeft =  function(){
-			this.sprite.x -= this.walkspeed;
-	        player.setCurrentAnim("walkLeft");
+			this.sprite.x -= this.walkSpeed;
+	        this.setCurrentAnim("walkLeft");
 	    };
 	    this.moveRight = function(){
-			this.sprite.x += this.walkspeed;
-	        player.setCurrentAnim("walkRight");
+			this.sprite.x += this.walkSpeed;
+	        this.setCurrentAnim("walkRight");
 	    };
-
 	};
-
-	return{ Person: Person};
 });
