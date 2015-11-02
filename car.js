@@ -1,12 +1,15 @@
 var stage;
 var walkspeed = 3;
-var l, r, u, d, rel;
+var l = false, r = false, u = false, d = false, rel;
 var walkDownFrames = {"starts": "0", "ends":"5"};
-var changeFrames = false;
 var player;
+var persons = [];
+var time = 0;
 
 function Start() {
-
+    setInterval(function(){ 
+        time++;
+    }, 100);
 
     stage = new Stage("c");
     stage.stageWidth = 700;
@@ -21,37 +24,45 @@ function Start() {
 
     //player setup
     player = new Person("player");
+    player.newAnim("idleDown", "girlsheet.png", 100, 100, 
+        [0],
+        [0],
+        100);
+    player.newAnim("idleRight", "girlsheet.png", 100, 100, 
+        [0],
+        [200],
+        100);
+    player.newAnim("idleLeft", "girlsheet.png", 100, 100, 
+        [0],
+        [300],
+        100);
+    player.newAnim("idleUp", "girlsheet.png", 100, 100, 
+        [0],
+        [100],
+        100);
     player.newAnim("walkDown", "girlsheet.png", 100, 100, 
         [100, 200, 300, 400, 500, 600],
         [0, 0, 0, 0, 0, 0],
         100);
-    player.newAnim("idle", "girlsheet.png", 100, 100, 
-        [0],
-        [0],
+    player.newAnim("walkRight", "girlsheet.png", 100, 100, 
+        [100, 200, 300, 400, 500, 600],
+        [200, 200, 200, 200, 200, 200],
+        100);
+    player.newAnim("walkLeft", "girlsheet.png", 100, 100, 
+        [100, 200, 300, 400, 500, 600],
+        [300, 300, 300, 300, 300, 300],
+        100);
+    player.newAnim("walkUp", "girlsheet.png", 100, 100, 
+        [100, 200, 300, 400, 500, 600],
+        [100, 100, 100, 100, 100, 100],
         100);
     player.setupPlayerSprite(stage.stageWidth / 2, stage.stageHeight / 2);
-
-    // function setupPlayerSprite(x, y){
-    //     car = new Sprite();
-    //     car.x = x;
-    //     car.y = y;
-    //     var tempBitmap;
-    //     for(var i = 0; i < player.frames.length; i++){
-    //         tempBitmap = new Bitmap(player.frames[i]);
-    //         tempBitmap.x = -123;
-    //         tempBitmap.y = -50;
-    //         car.addChild(tempBitmap);
-    //     }
-    // }
+    persons.push(player);
 
 
-    // stage.addChild(car);
-    stage.addChild(player.sprite);
-
-
-    setInterval(function(){ 
-        changeFrames = true;
-    }, 100);
+    for(var i = 0; i < persons.length; i++){
+        stage.addChild(persons[i].sprite);
+    }
 
 
     // events
@@ -91,38 +102,37 @@ function onKU(e) {
 
 function onEF(e) {
     //animation when no movement input is being given
-    player.setCurrentAnim("idle");
+    if(player.currentAnim == "walkRight")
+        player.setCurrentAnim("idleRight");
+    else if(player.currentAnim == "walkDown")
+        player.setCurrentAnim("idleDown");
+    else if(player.currentAnim == "walkUp")
+        player.setCurrentAnim("idleUp");
+    else if(player.currentAnim == "walkLeft")
+        player.setCurrentAnim("idleLeft");
 
-    if (u) player.sprite.y -= walkspeed;
+    // console.log(u + " " + d + " " + r + " " + l);
+    if (u){
+        player.sprite.y -= walkspeed;
+        player.setCurrentAnim("walkUp");
+    }
     if (d){
         player.sprite.y += walkspeed;
         player.setCurrentAnim("walkDown");
     }
-    if (r) player.sprite.x += walkspeed;
-    if (l) player.sprite.x -= walkspeed;
+    if (r){
+        player.sprite.x += walkspeed;
+        player.setCurrentAnim("walkRight");
+    }
+    if (l){
+        player.sprite.x -= walkspeed;
+        player.setCurrentAnim("walkLeft");
+    }
     if (rel) window.location.reload(false);
 
-    //if we're allowed to change to the next frame, and the animation we've set
-    //actually exists
-    if(changeFrames && player.anims.hasOwnProperty(player.currentAnim)){
-
-        //set all frames to invisible, except the one we're on
-        for(var j = 0; j < player.sprite.numChildren; j++){
-            player.sprite.getChildAt(j).visible = false;
-            if(j == player.anims[player.currentAnim][2]){
-                player.sprite.getChildAt(j).visible = true;
-            }
-        }
-
-        //reset flag that lets us change frames
-        changeFrames = false;
-
-        //increment frame counter
-        player.anims[player.currentAnim][2]++;
-
-        //if frame counter is on last frame, reset it to the first one
-        if(player.anims[player.currentAnim][2] >= player.anims[player.currentAnim][1]){
-            player.anims[player.currentAnim][2] = player.anims[player.currentAnim][0];
-        }
+    //update all Persons
+    for(var i = 0; i < persons.length; i++){
+        persons[i].update();
     }
+
 }

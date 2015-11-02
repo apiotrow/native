@@ -18,9 +18,36 @@ var Person = Class({
 		this.anims = {}; //{"anim's name": [bunch of ints]}
 		this.frames = []; //for holding the frames we add as children when we initialize
 		this.currentAnimInterval = 10; //interval in milliseconds between frames of current anim
-		this.changeFrames = false; //are we allowed to change frames?
+		this.nextFrame = false; //are we allowed to change frames?
 		this.currentAnim = ""; //Person's current animation
 		this.sprite = new Sprite();
+		this.currentTime = time;
+		this.direction = "down";
+	},
+	update: function(){
+		//if we're allowed to change to the next frame, and the animation we've set
+	    //actually exists
+	    if(this.currentTime < time && this.anims.hasOwnProperty(this.currentAnim)){
+
+	        //set all frames to invisible, except the one we're on
+	        for(var j = 0; j < this.sprite.numChildren; j++){
+	            this.sprite.getChildAt(j).visible = false;
+	            if(j == this.anims[this.currentAnim][2]){
+	                this.sprite.getChildAt(j).visible = true;
+	            }
+	        }
+
+	        //reset time
+	        this.currentTime = time;
+
+	        //increment frame counter
+	        this.anims[this.currentAnim][2]++;
+
+	        //if frame counter is on last frame, reset it to the first one
+	        if(this.anims[this.currentAnim][2] >= this.anims[this.currentAnim][1]){
+	            this.anims[this.currentAnim][2] = this.anims[this.currentAnim][0];
+	        }
+	    }
 	},
 	toString: function(){
 		return ("Person: " + this.name);
@@ -33,7 +60,7 @@ var Person = Class({
 		}
 		//[frame anim starts on, frame anim ends on, 
 		//a variable to hold where we left off, interval]
-		this.anims[animName] = [animStartFrame, animStartFrame + startsX.length, 0, 103];
+		this.anims[animName] = [animStartFrame, animStartFrame + startsX.length, animStartFrame, 103];
 		console.log(this.anims["walkDown"]);
     },
     addFrame: function(spritesheet, x, y, w, h){
@@ -47,17 +74,17 @@ var Person = Class({
         });
         this.frames.push(newHund);
     },
-    setCurrentAnimInterval: function(ms){
-    	// clearInterval(this.currentAnimInterval);
-    	// this.currentAnimInterval = setInterval(function(){ 
-     //    	this.changeFrames = true;
-    	// }, ms);
-    },
+    // setCurrentAnimInterval: function(ms){
+    // 	clearInterval(this.currentAnimInterval);
+    // 	this.currentAnimInterval = setInterval(function(){ 
+    //     	this.nextFrame = true;
+    // 	}, ms);
+    // },
     setCurrentAnim: function(animName){
     	this.currentAnim = animName;
-	    if(this.anims.hasOwnProperty(animName)){
-	    	this.setCurrentAnimInterval(this.anims[animName][3]);
-    	}
+	    // if(this.anims.hasOwnProperty(animName)){
+	    // 	this.setCurrentAnimInterval(this.anims[animName][3]);
+    	// }
     },
     setupPlayerSprite: function(x, y){
         this.sprite = new Sprite();
