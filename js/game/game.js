@@ -2,7 +2,6 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
     var stage;
     var walkspeed = 3;
     var l = false, r = false, u = false, d = false, rel;
-    var player;
     var persons = [];
 
 
@@ -22,12 +21,8 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
     s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
     stage.addChild(s);
 
-
     //player setup
-    player = new Person("player");
-    player.spriteSheet = "assets/sprites/girlsheet.png";
-    player.frameWidth = 100;
-    player.frameHeight = 100;
+    var player = new Person("player", stage, 100, 100, "assets/sprites/girlsheet.png");
     player.framesInfo = {
         "idleDown": {
             frameCoords: [
@@ -99,27 +94,46 @@ define(['Person','ivank', "Input"], function(Person, ivank, Input) {
         },
     };
     player.createAnims();
-
     player.setupSprite(stage.stageWidth / 2, stage.stageHeight / 2);
     persons.push(player);
 
-    // var npc = new Person("npcguy");
-    // npc.newAnim("walkDown", "assets/sprites/girlsheet.png", 100, 100, 
-    //     [100, 200, 300, 400, 500, 600],
-    //     [0, 0, 0, 0, 0, 0],
-    //     100);
-    // npc.setupSprite(stage.stageWidth / 3, stage.stageHeight / 3);
-    // npc.setCurrentAnim("walkDown");
-    // persons.push(npc);
+    var npc = new Person("npcguy", stage, 100, 100, "assets/sprites/girlsheet.png");
+    npc.framesInfo = {
+        "walkDown": {
+            frameCoords: [
+                [100,0],
+                [200,0],
+                [300,0],
+                [400,0],
+                [500,0],
+                [600,0],
+            ],
+            speed: 100
+        },
+    }
+    npc.createAnims();
+    npc.setupSprite(stage.stageWidth / 3, stage.stageHeight / 3);
+    npc.setCurrentAnim("walkDown");
+    persons.push(npc);
 
-    // var npc2 = new Person("npcguy");
-    // npc2.newAnim("walkDown", "assets/sprites/girlsheet.png", 100, 100, 
-    //     [100, 200, 300, 400, 500, 600],
-    //     [0, 0, 0, 0, 0, 0],
-    //     100);
-    // npc2.setupSprite((stage.stageWidth / 2) + 100, (stage.stageHeight / 2) + 100);
-    // npc2.setCurrentAnim("walkDown");
-    // persons.push(npc2);
+    var npc2 = new Person("npcguy2", stage, 100, 100, "assets/sprites/girlsheet.png");
+    npc2.framesInfo = {
+        "walkUp": {
+            frameCoords: [
+                [100,100],
+                [200,100],
+                [300,100],
+                [400,100],
+                [500,100],
+                [600,100],
+            ],
+            speed: 100
+        },
+    }
+    npc2.createAnims();
+    npc2.setupSprite(stage.stageWidth / 4 + 350, stage.stageHeight / 4 + 100);
+    npc2.setCurrentAnim("walkUp");
+    persons.push(npc2);
 
 
     //initialize input handler

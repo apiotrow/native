@@ -1,9 +1,9 @@
-define("Person", function() {
-	return function Person(name){
+define("Person",["ivank"], function(h) {
+	return function Person(name, stage, width, height, spriteSheet){
 		this.walkSpeed = 3;
-		this.spriteSheet = "";
-		this.frameWidth;
-		this.frameHeight;
+		this.spriteSheet = spriteSheet;
+		this.frameWidth = width;
+		this.frameHeight = height;
 		this.framesInfo = {};
 		this.name = name;
 		this.anims = {}; //{"anim's name": [bunch of ints]}
@@ -13,19 +13,16 @@ define("Person", function() {
 		this.currentAnim = "idleDown"; //Person's current animation
 		this.sprite = new Sprite();
 		this.lastTime = rpgGlobs.time;
-		this.x = this.sprite.x;
-		this.y = this.sprite.y;
-		
+		this.boundingBox = new Sprite();
+
+    	stage.addChild(this.boundingBox);
 
 		this.update = function(){
-			this.x = this.sprite.x;
-			this.y = this.sprite.y;
-			// console.log(this.lastTime + "  " + time);
+			this.drawBoundingBox();
 
 			//if we're allowed to change to the next frame, and the animation we've set
 		    //actually exists
 		    if(this.lastTime < rpgGlobs.time && this.anims.hasOwnProperty(this.currentAnim)){
-
 		        //set all frames to invisible, except the one we're on
 		        for(var j = 0; j < this.sprite.numChildren; j++){
 
@@ -48,6 +45,23 @@ define("Person", function() {
 		        }
 		    }
 		};
+		this.drawBoundingBox = function(){
+			with(this.boundingBox.graphics){
+				clear();
+				beginFill(0xFF0000);
+				var x = this.sprite.getBounds(this.sprite.parent).x;
+				var y = this.sprite.getBounds(this.sprite.parent).y;
+				var w = this.sprite.getBounds(this.sprite.parent).width;
+				var h = this.sprite.getBounds(this.sprite.parent).height;
+
+				var lineWidth = 2;
+
+				drawRect(x, y, w, lineWidth);
+				drawRect(x, y + h, w, lineWidth);
+				drawRect(x + w, y, lineWidth, h);
+				drawRect(x, y, lineWidth, h);
+			}
+		};
 		//make a new animation and add it to this.anims
 		this.newAnim = function(args){
 			var animStartFrame = this.frames.length;
@@ -67,6 +81,8 @@ define("Person", function() {
 				args.speed
 			];
 	    };
+	    //take everything from this.framesInfo and makes frames
+	    //out of it
 	    this.createAnims = function(){
 	    	for(var anim in this.framesInfo){
 	    		this.newAnim({
@@ -76,6 +92,7 @@ define("Person", function() {
         		});
 	    	};
 	    };
+	    //cut out a frame from a spritesheet and push it to this.frames
 	    this.addFrame = function(spritesheet, x, y, w, h){
 	        var newHund = new BitmapData("assets/sprites/onehundy.png");
 	        var ss = new BitmapData(spritesheet);
@@ -85,6 +102,7 @@ define("Person", function() {
 	        });
 	        this.frames.push(newHund);
 	    };
+
 	    this.setCurrentAnim = function(animName){
 	    	this.currentAnim = animName;
 	    };

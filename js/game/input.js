@@ -15,6 +15,14 @@ define(['ivank'], function(ivank) {
 	        else if(this.player.currentAnim == "walkLeft")
 	            this.player.setCurrentAnim("idleLeft");
 
+
+
+
+	        //code below keeps the player facing the U, D, L, or R
+	        //direction they were walking in when a second directional
+	        //button is pressed. makes the second button cause a "strafe"
+
+
 	        function onlyUp(){
 	            if(u && !d && !r && !l){
 	                return true;
