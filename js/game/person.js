@@ -8,7 +8,7 @@ define("Person", function() {
 		this.nextFrame = false; //are we allowed to change frames?
 		this.currentAnim = "idleDown"; //Person's current animation
 		this.sprite = new Sprite();
-		this.lastTime = time;
+		this.lastTime = rpgGlobs.time;
 		this.x = this.sprite.x;
 		this.y = this.sprite.y;
 		
@@ -20,7 +20,7 @@ define("Person", function() {
 
 			//if we're allowed to change to the next frame, and the animation we've set
 		    //actually exists
-		    if(this.lastTime < time && this.anims.hasOwnProperty(this.currentAnim)){
+		    if(this.lastTime < rpgGlobs.time && this.anims.hasOwnProperty(this.currentAnim)){
 
 		        //set all frames to invisible, except the one we're on
 		        for(var j = 0; j < this.sprite.numChildren; j++){
@@ -33,7 +33,7 @@ define("Person", function() {
 		        }
 
 		        //reset time
-		        this.lastTime = time;
+		        this.lastTime = rpgGlobs.time;
 
 		        //increment frame counter
 		        this.anims[this.currentAnim][2]++;

@@ -1,4 +1,4 @@
-define(['Person','ivank'], function(Person, ivank) {
+define(['Person','ivank', "Input"], function(Person, ivank, Input) {
     var stage;
     var walkspeed = 3;
     var l = false, r = false, u = false, d = false, rel;
@@ -7,7 +7,7 @@ define(['Person','ivank'], function(Person, ivank) {
 
 
     setInterval(function(){ 
-        time++;
+        rpgGlobs.time++;
     }, 100);
 
 
@@ -61,6 +61,10 @@ define(['Person','ivank'], function(Person, ivank) {
     persons.push(player);
 
 
+    //initialize input handler
+    var newInput = new Input(player);
+
+
     //add all persons to stage
     for(var i = 0; i < persons.length; i++){
         stage.addChild(persons[i].sprite);
@@ -94,108 +98,17 @@ define(['Person','ivank'], function(Person, ivank) {
 
         if (e.keyCode == 82) rel = false; //r
     });
-    stage.addEventListener(Event.ENTER_FRAME, playerMovement);
+
+
+    stage.addEventListener(Event.ENTER_FRAME, EF);
     
-    var keyOne = "";
-    var doubleMove = false;
-    function playerMovement(e) {
-        //animation when no movement input is being given
-        if(player.currentAnim == "walkRight")
-            player.setCurrentAnim("idleRight");
-        else if(player.currentAnim == "walkDown")
-            player.setCurrentAnim("idleDown");
-        else if(player.currentAnim == "walkUp")
-            player.setCurrentAnim("idleUp");
-        else if(player.currentAnim == "walkLeft")
-            player.setCurrentAnim("idleLeft");
 
-        function onlyUp(){
-            if(u && !d && !r && !l){
-                return true;
-            }
-        }
-        function onlyDown(){
-            if(!u && d && !r && !l){
-                return true;
-            }
-        }
-        function onlyLeft(){
-            if(!u && !d && !r && l){
-                return true;
-            }
-        }
-        function onlyRight(){
-            if(!u && !d && r && !l){
-                return true;
-            }
-        }
-
-        if(onlyUp()){
-            keyOne = "u";
-        }else if(onlyDown()){
-            keyOne = "d";
-        }else if(onlyLeft()){
-            keyOne = "l";
-        }else if(onlyRight()){
-            keyOne = "r";
-        }
-
-
-
-        console.log(keyOne);
-        if(r){
-            if (keyOne == "u"){
-                player.moveRight("walkUp");
-            }else if(keyOne == "d"){
-                player.moveRight("walkDown");
-            }else if(keyOne == "r"){
-                player.moveRight("walkRight");
-            }else if(keyOne == "l"){
-                player.setCurrentAnim("idleDown");
-            }
-        }
-        if (l){
-            if (keyOne == "u"){
-                player.moveLeft("walkUp");
-            }else if(keyOne == "d"){
-                player.moveLeft("walkDown");
-            }else if(keyOne == "r"){
-                player.setCurrentAnim("idleDown");
-            }else if(keyOne == "l"){
-                player.moveLeft("walkLeft");
-            }
-        }
-        if (u){
-            if (keyOne == "u"){
-                player.moveUp("walkUp");
-            }else if(keyOne == "d"){
-                player.setCurrentAnim("idleDown");
-            }else if(keyOne == "r"){
-                player.moveUp("walkRight");
-            }else if(keyOne == "l"){
-                player.moveUp("walkLeft");
-            }
-        }
-        if (d){
-            if (keyOne == "u"){
-                player.setCurrentAnim("idleDown");
-            }else if(keyOne == "d"){
-                player.moveDown("walkDown");
-            }else if(keyOne == "r"){
-                player.moveDown("walkRight");
-            }else if(keyOne == "l"){
-                player.moveDown("walkLeft");
-            }
-        }
-        
-        if (rel) window.location.reload(false);
-
-        //update all Persons
+    function EF(){
+        // //update all Persons
         for(var i = 0; i < persons.length; i++){
             persons[i].update();
         }
+
+        newInput.update(u, d, l, r, rel);
     }
-
-
-    
 });
