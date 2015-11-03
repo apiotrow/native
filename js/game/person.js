@@ -15,17 +15,44 @@ define("Person",["ivank"], function(h) {
 		this.sprite = new Sprite();
 		this.lastTime = rpgGlobs.time;
 		this.boundingBox = new Sprite();
+		this.canMoveLeft = true;
+		this.canMoveUp = true;
+		this.canMoveRight = true;
+		this.canMoveDown = true;
 
     	stage.addChild(this.boundingBox);
 
 		this.update = function(persons){
 			this.drawBoundingBox();
 
+			this.canMoveLeft = true;
+			this.canMoveUp = true;
+			this.canMoveRight = true;
+			this.canMoveDown = true;
+
 			if(!this.isNpc){
 				for(var i = 0; i < persons.length; i++){
 					if(persons[i] != this){
 						if(this.sprite.hitTestObject(persons[i].sprite)){
-							console.log("hit");
+							
+							var other = persons[i].sprite;
+							var me = this.sprite;
+							var threshold = 2;
+
+							// console.log(other.x - me.x);
+
+							if(me.x > other.x){
+								this.canMoveLeft = false;
+							}
+							if(me.y > other.y && (other.x - me.x) < (me.width - threshold)){
+								this.canMoveUp = false;
+							}
+							if(me.x < other.x){
+								this.canMoveRight = false;
+							}
+							if(me.y < other.y && (other.y - me.y) > (me.width - threshold)){
+								this.canMoveDown = false;
+							}
 						}
 					}
 				}
@@ -132,19 +159,28 @@ define("Person",["ivank"], function(h) {
 	        }
 	    };
 	    this.moveDown = function(anim){
-			this.sprite.y += this.walkSpeed;
+	    	if(this.canMoveDown){
+				this.sprite.y += this.walkSpeed;
+			}
 	        this.setCurrentAnim(anim);
 	    };
 	    this.moveUp = function(anim){
-			this.sprite.y -= this.walkSpeed;
+	    	if(this.canMoveUp){
+				this.sprite.y -= this.walkSpeed;
+			}
 	        this.setCurrentAnim(anim);
 	    };
 	    this.moveLeft =  function(anim){
-			this.sprite.x -= this.walkSpeed;
+	    	if(this.canMoveLeft){
+	    		this.sprite.x -= this.walkSpeed;
+	    	}
+			
 	        this.setCurrentAnim(anim);
 	    };
 	    this.moveRight = function(anim){
-			this.sprite.x += this.walkSpeed;
+	    	if(this.canMoveRight){
+				this.sprite.x += this.walkSpeed;
+			}
 	        this.setCurrentAnim(anim);
 	    };
 

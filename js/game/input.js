@@ -62,7 +62,8 @@ define(['ivank'], function(ivank) {
 	            }else if(keyOne == "r"){
 	                this.player.moveRight("walkRight");
 	            }else if(keyOne == "l"){
-	                this.player.setCurrentAnim("idleDown");
+	                keyOne = "r"; //prevents moonwalking when pressing 3 keys
+	                this.player.moveRight("walkRight");
 	            }
 	        }
 	        if (l){
@@ -71,7 +72,8 @@ define(['ivank'], function(ivank) {
 	            }else if(keyOne == "d"){
 	                this.player.moveLeft("walkDown");
 	            }else if(keyOne == "r"){
-	                this.player.setCurrentAnim("idleDown");
+	            	keyOne = "l"; //prevents moonwalking when pressing 3 keys
+	                this.player.moveLeft("walkRight");
 	            }else if(keyOne == "l"){
 	                this.player.moveLeft("walkLeft");
 	            }
@@ -80,7 +82,7 @@ define(['ivank'], function(ivank) {
 	            if (keyOne == "u"){
 	                this.player.moveUp("walkUp");
 	            }else if(keyOne == "d"){
-	                this.player.setCurrentAnim("idleDown");
+	                this.player.moveUp("walkDown");
 	            }else if(keyOne == "r"){
 	                this.player.moveUp("walkRight");
 	            }else if(keyOne == "l"){
@@ -89,7 +91,7 @@ define(['ivank'], function(ivank) {
 	        }
 	        if (d){
 	            if (keyOne == "u"){
-	                this.player.setCurrentAnim("idleDown");
+	                this.player.moveDown("walkUp");
 	            }else if(keyOne == "d"){
 	                this.player.moveDown("walkDown");
 	            }else if(keyOne == "r"){
