@@ -37,20 +37,29 @@ define("Person",["ivank"], function(h) {
 							
 							var other = persons[i].sprite;
 							var me = this.sprite;
-							var threshold = 2;
+							var threshold = 4;
 
-							// console.log(other.x - me.x);
-
-							if(me.x > other.x){
+							//i don't know how the fuck this works
+							if(me.x > other.x
+								//bottom leftward sliding
+								&& (me.x - other.x) > (me.height - threshold)){
 								this.canMoveLeft = false;
 							}
-							if(me.y > other.y && (other.x - me.x) < (me.width - threshold)){
+							if(me.y > other.y 
+								//left upward side sliding
+								&& (other.x - me.x) < (me.width - threshold)
+								//right upward side sliding
+								&& (me.y - other.y) > (me.width - threshold)){
 								this.canMoveUp = false;
 							}
-							if(me.x < other.x){
+							if(me.x < other.x
+								//bottom rightward sliding
+								&& (other.x - me.x) > (me.height - threshold)){
 								this.canMoveRight = false;
 							}
-							if(me.y < other.y && (other.y - me.y) > (me.width - threshold)){
+							if(me.y < other.y 
+								//left side sliding
+								&& (other.y - me.y) > (me.width - threshold)){
 								this.canMoveDown = false;
 							}
 						}
